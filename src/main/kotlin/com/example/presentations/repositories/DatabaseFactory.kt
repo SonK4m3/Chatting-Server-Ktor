@@ -1,7 +1,6 @@
 package com.example.presentations.repositories
 
-import com.example.models.tables.MessageTable
-import com.example.models.tables.UserTable
+import com.example.models.tables.*
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.config.*
@@ -16,15 +15,19 @@ object DatabaseFactory {
     fun init(config: ApplicationConfig) {
         val driverClassName = config.property("storage.driverClassName").getString()
         val jdbcURL = config.property("storage.jdbcURL").getString()
-//        +
-//                (config.propertyOrNull("storage.dbFilePath")?.getString()?.let {
-//                    File(it).canonicalFile.absolutePath
-//                } ?: "")
+
         val database = Database.connect(createHikariDataSource(url = jdbcURL, driver = driverClassName))
 
         transaction(database) {
-            SchemaUtils.create(UserTable)
-            SchemaUtils.create(MessageTable)
+            SchemaUtils.create(
+                UserTable,
+                ContactTable,
+                MessageTable,
+                GroupTable,
+                FriendTable,
+                InvitationTable,
+                ContactTable
+            )
         }
     }
 

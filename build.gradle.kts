@@ -64,6 +64,16 @@ dependencies {
     implementation("com.zaxxer:HikariCP:$hikaricp_version")
     implementation("org.ehcache:ehcache:$ehcache_version")
     implementation("org.postgresql:postgresql:$postgres_version")
+    implementation(kotlin("stdlib-jdk8"))
 
+    //cors
+    implementation("io.ktor:ktor-server-cors:$ktor_version")
 
+    //test
+    testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
+
+}
+kotlin {
+    jvmToolchain(11)
 }

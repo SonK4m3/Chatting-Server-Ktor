@@ -5,6 +5,7 @@ import com.example.plugins.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.locations.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.defaultheaders.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.*
@@ -21,6 +22,16 @@ fun Application.module() {
     install(DefaultHeaders)
     install(Locations)
     install(Resources)
+    install(CORS) {
+        anyHost()
+        allowCredentials = true
+        allowMethod(HttpMethod.Post)
+        allowMethod(HttpMethod.Get)
+        allowMethod(HttpMethod.Put)
+
+        allowHeader(HttpHeaders.Authorization)
+        allowHeader(HttpHeaders.ContentType)
+    }
 
     configAuthenticationJWT()
     configSerializer()
