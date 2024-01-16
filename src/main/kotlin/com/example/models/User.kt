@@ -9,4 +9,6 @@ data class User(
     val email: String,
     @SerialName("password") val hashPassword: String,
     val username: String
-)
+) {
+    constructor(id: Int): this(id, "", "", "")
+}

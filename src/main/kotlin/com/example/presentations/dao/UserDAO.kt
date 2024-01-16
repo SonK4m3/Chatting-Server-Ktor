@@ -4,49 +4,48 @@ import com.example.models.User
 import com.example.models.tables.UserTable
 import org.jetbrains.exposed.sql.ResultRow
 import com.example.presentations.repositories.DatabaseFactory.dbQuery
-import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 
 class UserDAO : DAO<User> {
-    private fun resultRowToUser(row: ResultRow) = User(
+    override fun resultRowToClass(row: ResultRow) = User(
         id = row[UserTable.id],
         email = row[UserTable.email],
         hashPassword = row[UserTable.hashPassword],
         username = row[UserTable.username]
     )
 
-    override suspend fun getAll(): List<User> {
+    override suspend fun readAll(): List<User> {
         return dbQuery {
-            UserTable.selectAll().map(::resultRowToUser)
+            UserTable.selectAll().map(::resultRowToClass)
         }
     }
 
-    override suspend fun findById(id: Int): User? {
+    override suspend fun read(id: Int): User? {
         return dbQuery {
             UserTable
                 .select { UserTable.id eq id }
-                .map(::resultRowToUser)
+                .map(::resultRowToClass)
                 .singleOrNull()
         }
     }
 
-    override suspend fun removeById(id: Int): Boolean {
+    override suspend fun delete(id: Int): Boolean {
         TODO("Not yet implemented")
     }
 
-    override suspend fun edit(id: Int, new: User): Boolean {
+    override suspend fun update(id: Int, new: User): Boolean {
         TODO("Not yet implemented")
     }
 
-    override suspend fun addNew(new: User): User? {
+    override suspend fun create(new: User): User? {
         return dbQuery {
             UserTable.insert {
                 it[UserTable.email] = new.email
                 it[UserTable.hashPassword] = new.hashPassword
                 it[UserTable.username] = new.username
-            }.resultedValues?.map(::resultRowToUser)?.singleOrNull()
+            }.resultedValues?.map(::resultRowToClass)?.singleOrNull()
         }
     }
 
@@ -54,7 +53,7 @@ class UserDAO : DAO<User> {
         return dbQuery {
             UserTable
                 .select { UserTable.email eq email }
-                .map(::resultRowToUser)
+                .map(::resultRowToClass)
                 .singleOrNull()
         }
     }
