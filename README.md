@@ -1,8 +1,10 @@
 # Chatting server by Ktor
 
-Using Ktor for developing http server, template server and websocket server
+Using Ktor for developing http server, template server and websocket server.
 
 ## Overview
+
+User logins to system then invites other to the conversation. User can set avatar and own nickname.
 
 The chatting server with chatting feature can be send text, image, video. Overwide, user can login with jwt authentication.
 The system using Jwt authenticate, Json serialize, PostgreSQL database and Expose ORM.
